@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Deikant</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script>
+      (function ($, window, document) {
+
+        $(document).ready(function () {
+          var myForm = $('#myForm');
+          //Enables popover everywhere on document
+          var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+          var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+          })
+
+          myForm.on('submit', function (e) {
+            e.preventDefault();
+            var data = myForm.serialize();
+
+            $.post('/calculate', data, function (result) {
+              if (result.success) {
+                $('#success_alert').text(result.message).show();
+                $('#success_alert2').text(result.message2).show();
+                $('#error_alert').hide();
+              } else {
+                alert('Error: ' + result.message);
+                $('#error_alert').text(result.message).show();
+        				$('#success_alert').hide();
+              }
+              console.log(result);
+            });
+          })
+        });
+      }(jQuery, window, document))
+    </script>
+  </head>
+  
+  <body>
+    <div id="main-container" class ="container">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{url_for('home')}}">AA Tools</a>
+      </nav>
+    {% block content %}
+    {% endblock %}
+    </div>
+
+    <!-- Additional css styling on main container to control page width -->
+    <style>
+    @media (min-width: 1200px) {
+        .container{
+            max-width: 970px;
+        }
+    }
+    </style>
+  </body>
+</html>
