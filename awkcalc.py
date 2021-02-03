@@ -38,6 +38,7 @@ def calculate():
         fail = form.fail.data/100
         suc = form.suc.data/100
 
+        #
         if suc < awk:
             return jsonify({'success': False,
                             'message': 'Error - Desired success chance cannot be lower than initial awakening chance!'})
