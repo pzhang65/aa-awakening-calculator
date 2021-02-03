@@ -1,8 +1,8 @@
 # TODO LIST
 
 ### Urgent
-- [ ] Complete form validations
-- [x] Modify calculate() to handle low success chances
+- [-] Complete form validations
+  - [ ] Add blur handlers to highlight specific form field
 - [-] Create error handlers
 
 ### Features
@@ -12,3 +12,4 @@
 
 ### Completed Column ✓
 - [x] Create TODO.md
+- [x] Modify calculate() to handle low success chances

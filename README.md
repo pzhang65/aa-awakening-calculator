@@ -14,6 +14,10 @@ Stack includes:
 
 Instructions:
 
+Online: https://aa-awakening-calculator.herokuapp.com/
+
+Locally:
+
 1. Create a new virtualenv, activate it and run `pip install -r requirements.txt`.
 
 2. Run the app: `python awkcalc.py`
