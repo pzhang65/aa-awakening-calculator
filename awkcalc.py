@@ -15,12 +15,12 @@ CsrfProtect(app)
 
 
 class MyForm(FlaskForm):
-    awk = IntegerField(label=('What is the initial awakening chance?'),
-                        validators=[InputRequired(), NumberRange(min=0, max=100, message='Awakening must be between 0 and 100!')])
-    fail = IntegerField(label=('Fail stack bonus percent?'),
-                        validators=[InputRequired(), NumberRange(min=0, max=10, message='Fail stack must be between 0 and 10!')])
-    suc = IntegerField(label=('Desired success chance?'),
-                        validators=[InputRequired(), NumberRange(min=0, max=100, message='Desired chance must be between 0 and 100!')])
+    awk = IntegerField(label=('Initial awakening chance? [0-100]'),
+                        validators=[InputRequired(), NumberRange(min=0, max=100, message='awakening must be an integer between 0 and 100!')])
+    fail = IntegerField(label=('Fail stack bonus percent? [0-25]'),
+                        validators=[InputRequired(), NumberRange(min=0, max=25, message='fail stacks must be an integer between 0 and 25!')])
+    suc = IntegerField(label=('Desired success chance? [0-100]'),
+                        validators=[InputRequired(), NumberRange(min=0, max=100, message='success chance must be an integer between 0 and 100!')])
 
 
 @app.route('/', endpoint='home', methods=['GET', 'POST'])
@@ -31,6 +31,7 @@ def home():
 @app.route('/calculate', methods=['POST'])
 def calculate():
     form = MyForm()
+    err_list = []
 
     if form.validate_on_submit():
     #assign form data from POST
@@ -71,8 +72,12 @@ def calculate():
                         'message': (f"You will need: {atmpt1} attempts --> To awaken with: {per1} % chance"),
                         'message2':(f"You will need: {atmpt2} attempts --> To awaken with: {per2} % chance") })
 
+    for fieldName, errorMessages in form.errors.items():
+        for err in errorMessages:
+            err_list.append(err)
+
     return jsonify({'success': False,
-                    'message': 'Error - Invalid submission'})
+                    'message': (f"Error! {' '.join(err_list)}")})
 
 
 if __name__ == '__main__':
