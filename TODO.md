@@ -3,6 +3,7 @@
 ### Urgent
 - [ ] Complete form validations
 - [ ] Modify calculate() to handle low success chances
+- [ ] Create error handlers
 
 ### Features
 - [ ] Remake navbar to include functionality

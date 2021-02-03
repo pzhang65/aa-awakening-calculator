@@ -18,7 +18,7 @@ class MyForm(FlaskForm):
     awk = IntegerField(label=('What is the initial awakening chance?'),
                         validators=[InputRequired(), NumberRange(min=0, max=100, message='Percent must be an integer between 0 and 100!')])
     fail = IntegerField(label=('Fail stack bonus percent?'),
-                        validators=[InputRequired(), NumberRange(min=0, max=100, message='Percent must be an integer between 0 and 100!')])
+                        validators=[InputRequired(), NumberRange(min=0, max=100, message='Percent must be an integer between 0 and 10!')])
     suc = IntegerField(label=('Desired success chance?'),
                         validators=[InputRequired(), NumberRange(min=0, max=100, message='Percent must be an integer between 0 and 100!')])
 
@@ -32,10 +32,12 @@ def home():
 def calculate():
     form = MyForm()
 
+
     #assign form data from POST
     awk = form.awk.data/100
     fail = form.fail.data/100
     suc = form.suc.data/100
+
 
     #calculate attempts
     attempts=1
@@ -48,15 +50,29 @@ def calculate():
         awk_list.append((attempts,cur_awk*100))
 
     #unzips tuples into two list, first being # of attempts, second being awakening percent
-    atmpt_lst, per_lst = zip(*awk_list)
+    try:
+        atmpt_lst, per_lst = zip(*awk_list)
+    except ValueError:
+        if form.validate_on_submit():
+            return jsonify({'success': False,
+                            'message': 'Error - Desired success chance cannot be lower than initial awakening chance!'})
     atmpt1=atmpt_lst[-1]
-    atmpt2=atmpt_lst[-2]
     per1=round(per_lst[-1],2)
+
+    try:
+        atmpt2=atmpt_lst[-2]
+    except IndexError:
+        if form.validate_on_submit():
+            return jsonify({ 'success': True,
+                            'message': (f"You will need: {atmpt1} attempts --> To awaken with: {per1} % chance"),
+                            'message2':(f"You will need: 1 attempts --> To awaken with: {awk*100} % chance") })
+
     per2=round(per_lst[-2],2)
+
     if form.validate_on_submit():
         return jsonify({ 'success': True,
-            'message': (f"You will need: {atmpt1} attempts --> To awaken with: {per1} % chance"),
-            'message2':(f"You will need: {atmpt2} attempts --> To awaken with: {per2} % chance") })
+                        'message': (f"You will need: {atmpt1} attempts --> To awaken with: {per1} % chance"),
+                        'message2':(f"You will need: {atmpt2} attempts --> To awaken with: {per2} % chance") })
 
     return jsonify({'success': False,
                     'message': 'Error - Invalid submission'})
