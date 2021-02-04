@@ -2,8 +2,10 @@
 
 ### Urgent
 - [-] Complete form validations
+  - [X] Display validation errors next to form fields
   - [ ] Add blur handlers to highlight specific form field
-- [-] Create error handlers
+- [-] Create page error handlers
+- [ ] Add error to desired success chance when it's lower than initial awakening
 
 ### Features
 - [ ] Remake navbar to include functionality
