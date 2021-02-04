@@ -15,13 +15,13 @@ CsrfProtect(app)
 
 
 class MyForm(FlaskForm):
-    awk = IntegerField(label=('Initial awakening chance? [0-100]'),
+    awk = IntegerField(label=('Initial awakening chance?'),
                         validators=[InputRequired(),
-                        NumberRange(min=0, max=100, message='awakening must be an integer between %(min)s and %(max)s!')])
-    fail = IntegerField(label=('Fail stack bonus percent? [0-25]'),
-                        validators=[InputRequired(), NumberRange(min=0, max=25, message='fail stacks must be an integer between %(min)s and %(max)s!')])
-    suc = IntegerField(label=('Desired success chance? [0-100]'),
-                        validators=[InputRequired(), NumberRange(min=0, max=100, message='success chance must be an integer between %(min)s and %(max)s!')])
+                        NumberRange(min=0, max=100, message='Awakening must be an integer between %(min)s and %(max)s!')])
+    fail = IntegerField(label=('Fail stack bonus percent?'),
+                        validators=[InputRequired(), NumberRange(min=0, max=25, message='Fail stacks must be an integer between %(min)s and %(max)s!')])
+    suc = IntegerField(label=('Desired success chance?'),
+                        validators=[InputRequired(), NumberRange(min=0, max=100, message='Success chance must be an integer between %(min)s and %(max)s!')])
 
 
 @app.route('/', endpoint='home', methods=['GET', 'POST'])
@@ -33,7 +33,7 @@ def home():
 def calculate():
     form = MyForm()
     #initialize error list to store errors
-    err_list = []
+    err_key = []
 
     if form.validate_on_submit():
         #assign form data from POST
@@ -75,12 +75,14 @@ def calculate():
                         'message': (f"You will need: {atmpt1} attempts --> To awaken with: {per1} % chance"),
                         'message2':(f"You will need: {atmpt2} attempts --> To awaken with: {per2} % chance") })
 
+
+
+    # Iterate through validation errors to pass to front end for display to user
     for fieldName, errorMessages in form.errors.items():
-        for err in errorMessages:
-            err_list.append(err)
+        err_key.append((fieldName, errorMessages))
 
     return jsonify({'success': False,
-                    'message': (f"Error! {' '.join(err_list)}")})
+                    'message': 'Error! Invalid submission, please check inputs.', 'key': err_key})
 
 
 if __name__ == '__main__':
