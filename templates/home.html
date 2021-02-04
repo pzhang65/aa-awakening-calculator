@@ -22,11 +22,10 @@
 
     <div class="row mb-4">
       <div class="col">
-        <div id="awk_input">
-          <div class="form-floating mb-4">
-            {{form.awk(class="form-control", placeholder="30%")}}
-            <label>{{form.awk.label}}</label>
-          </div>
+        <div class="form-floating mb-4">
+          {{form.awk(class="form-control", value="10", placeholder="30%")}}
+          <label>{{form.awk.label}}</label>
+          <div id="awk_error" class="invalid-feedback">Something went wrong.</div>
         </div>
       </div>
       <div class="col-2">
@@ -38,11 +37,10 @@
 
     <div class="row mb-4">
       <div class="col">
-        <div id="fail_input">
-          <div class="form-floating mb-3">
-            {{form.fail(class="form-control", placeholder="30%")}}
-            <label>{{form.fail.label}}</label>
-          </div>
+        <div class="form-floating mb-3">
+          {{form.fail(class="form-control", value="5", placeholder="30%")}}
+          <label>{{form.fail.label}}</label>
+          <div id="fail_error" class="invalid-feedback">Something went wrong.</div>
         </div>
       </div>
       <div class="col-2">
@@ -54,11 +52,10 @@
 
     <div class="row">
       <div class="col">
-        <div id="suc_input">
-          <div class="form-floating mb-3">
-            {{form.suc(class="form-control", placeholder="30%")}}
-            <label>{{form.suc.label}}</label>
-          </div>
+        <div class="form-floating mb-3">
+          {{form.suc(class="form-control", value="80", placeholder="30%")}}
+          <label>{{form.suc.label}}</label>
+          <div id="suc_error" class="invalid-feedback">Something went wrong.</div>
         </div>
       </div>
       <div class="col-2">
