@@ -4,75 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Deikant</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <title>pzhang65</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-    <script>
-      (function ($, window, document) {
-
-        $(document).ready(function () {
-          var myForm = $('#myForm');
-          //Enables popover everywhere on document
-          var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-          var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-            return new bootstrap.Popover(popoverTriggerEl)
-          })
-
-          myForm.on('submit', function (e) {
-            e.preventDefault();
-            var data = myForm.serialize();
-
-            $.post('/calculate', data, function (result) {
-              if (result.success) {
-                $('#success_alert').text(result.message).show();
-                $('#success_alert2').text(result.message2).show();
-                // hide all error related content upon succesful validation
-                $('#error_alert').hide();
-                $('#awk_error').hide();
-                $('#fail_error').hide();
-                $('#suc_error').hide();
-              } else {
-                // hide all errors in case there are uncorrected error messages from last POST
-                $('#awk_error').hide();
-                $('#fail_error').hide();
-                $('#suc_error').hide();
-                // iterate through errors in err_key
-                $.each(result.key, function (index, value) {
-                  // show only the first error in errorMessages
-                  // because NumberRange() is in the domain of IntegerField()
-                  $('#'+value[0]+'_error').text(value[1][0]).show()
-                });
-                $('#error_alert').text(result.message).show();
-                //hide success related content since not validated
-        				$('#success_alert').hide();
-                $('#success_alert2').hide();
-              }
-              console.log(result);
-            });
-          })
-        });
-      }(jQuery, window, document))
-    </script>
-
     <!-- Additional css styling on main container to control page width -->
     <style>
-    @media (min-width: 1200px) {
+    @media (min-width: 400px) {
         .container{
-            max-width: 970px;
+            max-width: 580px;
         }
     }
     </style>
   </head>
-
   <body>
     <div id="main-container" class ="container">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{{url_for('home')}}">AA Tools</a>
+        <div class="col">
+          <a class="navbar-brand" href="{{url_for('home')}}">Pzhang65's AA tools</a>
+        </div>
+        <div class="col-2-p">
+          <a href="https://github.com/pzhang65" target="_blank"><img src="{{url_for('static', filename='images/GitHub_Logo.png')}}" alt="Github" style="width:100px;height:41px;"></a>
+        </div>
       </nav>
     {% block content %}
     {% endblock %}
     </div>
+  <script type=text/javascript src="{{url_for('static', filename='js/form.js') }}"></script>
+  <script type="text/javascript">
+    (function ($, window, document) {
 
+      $(document).ready(function () {
+        var myForm = $('#myForm');
+        //Enables popover everywhere on document
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+          return new bootstrap.Popover(popoverTriggerEl)
+        })
+
+        myForm.on('submit', function (e) {
+          e.preventDefault();
+          var data = myForm.serialize();
+
+          $.post('/calculate', data, function (result) {
+            if (result.success) {
+              $('#success_alert').text(result.message).show();
+              $('#success_alert2').text(result.message2).show();
+              // hide all error related content upon succesful validation
+              $('#error_alert').hide();
+              $('#awk_error').hide();
+              $('#fail_error').hide();
+              $('#suc_error').hide();
+            } else {
+              // hide all errors in case there are uncorrected error messages from last POST
+              $('#awk_error').hide();
+              $('#fail_error').hide();
+              $('#suc_error').hide();
+              // iterate through errors in err_key
+              $.each(result.key, function (index, value) {
+                // show only the first error in errorMessages
+                // because NumberRange() is in the domain of IntegerField()
+                $('#'+value[0]+'_error').text(value[1][0]).show()
+              });
+              $('#error_alert').text(result.message).show();
+              //hide success related content since not validated
+              $('#success_alert').hide();
+              $('#success_alert2').hide();
+            }
+            console.log(result);
+          });
+        })
+      });
+    }(jQuery, window, document))
+  </script>
   </body>
 </html>
