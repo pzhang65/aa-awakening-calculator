@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, jsonify, session
+from flask import Flask, render_template, jsonify
 from flask_wtf import FlaskForm
 from wtforms import IntegerField
 from flask_wtf.csrf import CsrfProtect
@@ -21,7 +21,7 @@ class MyForm(FlaskForm):
     fail = IntegerField(label=('Fail stack bonus percent?'),
                         validators=[InputRequired(), NumberRange(min=0, max=25, message='Fail stacks must be an integer between %(min)s and %(max)s!')])
     suc = IntegerField(label=('Desired success chance?'),
-                        validators=[InputRequired(), NumberRange(min=0, max=100, message='Success chance must be an integer between %(min)s and %(max)s!')])
+                        validators=[InputRequired(), NumberRange(min=0, max=100, message='Desired chance must be an integer between %(min)s and %(max)s!')])
 
 
 @app.route('/', endpoint='home', methods=['GET', 'POST'])
@@ -36,7 +36,7 @@ def calculate():
     err_key = []
 
     if form.validate_on_submit():
-        #assign form data from POST
+        #assign form data from POST and convert to percents
         awk = form.awk.data/100
         fail = form.fail.data/100
         suc = form.suc.data/100
