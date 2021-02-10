@@ -1,10 +1,10 @@
+# /awkcaalc.py
+
 from flask import Flask, render_template, jsonify
-from flask_wtf import FlaskForm
-from wtforms import IntegerField
 from flask_wtf.csrf import CsrfProtect
-from wtforms.validators import InputRequired, NumberRange
+from models.form import MyForm
 
-
+# In the future I will have a seperate config.py with different config classes
 class Config:
     SECRET_KEY = '11122233344'
 
@@ -13,21 +13,11 @@ app = Flask(__name__)
 app.config.from_object(Config)
 CsrfProtect(app)
 
-
-class MyForm(FlaskForm):
-    awk = IntegerField(label=('Initial awakening chance?'),
-                        validators=[InputRequired(),
-                        NumberRange(min=0, max=100, message='Awakening must be an integer between %(min)s and %(max)s!')])
-    fail = IntegerField(label=('Fail stack bonus percent?'),
-                        validators=[InputRequired(), NumberRange(min=0, max=25, message='Fail stacks must be an integer between %(min)s and %(max)s!')])
-    suc = IntegerField(label=('Desired success chance?'),
-                        validators=[InputRequired(), NumberRange(min=0, max=100, message='Desired chance must be an integer between %(min)s and %(max)s!')])
-
-
 @app.route('/', endpoint='home', methods=['GET', 'POST'])
 def home():
     form = MyForm()
     return render_template('home.html', form=form)
+
 
 @app.route('/calculate', methods=['POST'])
 def calculate():
