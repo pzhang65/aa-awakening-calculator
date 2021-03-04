@@ -1,7 +1,6 @@
 # /awkcaalc.py
 
 from flask import Flask, render_template, jsonify
-from flask_wtf.csrf import CsrfProtect
 from models.form import MyForm
 
 # In the future I will have a seperate config.py with different config classes
@@ -11,7 +10,6 @@ class Config:
 
 app = Flask(__name__)
 app.config.from_object(Config)
-CsrfProtect(app)
 
 @app.route('/', endpoint='home', methods=['GET', 'POST'])
 def home():
@@ -73,7 +71,6 @@ def calculate():
 
     return jsonify({'success': False,
                     'message': 'Error! Invalid submission, please check inputs.', 'key': err_key})
-
 
 if __name__ == '__main__':
     app.run()
