@@ -11,7 +11,7 @@
     myForm.on('submit', function (e) {
       e.preventDefault();
       var data = myForm.serialize();
-
+      console.log(data)
       $.post('/calculate', data, function (result) {
         if (result.success) {
           $('#success_alert').text(result.message).show();
