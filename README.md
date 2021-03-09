@@ -30,8 +30,8 @@ Local production server (gunicorn):
 
 1. Make sure Docker is installed
 
-2. 'docker-compose build'
+2. `docker-compose build`
 
-3. 'docker-compose up -d'
+3. `docker-compose up -d`
 
 4. Open your browser to localhost:5004 to view the app.
