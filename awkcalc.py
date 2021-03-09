@@ -22,13 +22,11 @@ def calculate():
     form = MyForm()
     #initialize error list to store errors
     err_key = []
-
     if form.validate_on_submit():
         #assign form data from POST and convert to percents
         awk = form.awk.data/100
         fail = form.fail.data/100
         suc = form.suc.data/100
-
         #user desired success cannot be lower than one single attempt
         if suc < awk:
             return jsonify({'success': False,

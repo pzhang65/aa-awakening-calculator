@@ -11,21 +11,25 @@
     myForm.on('submit', function (e) {
       e.preventDefault();
       var data = myForm.serialize();
-
+      console.log(data)
       $.post('/calculate', data, function (result) {
         if (result.success) {
           $('#success_alert').text(result.message).show();
           $('#success_alert2').text(result.message2).show();
           // hide all error related content upon succesful validation
           $('#error_alert').hide();
+
           $('#awk_error').hide();
           $('#fail_error').hide();
           $('#suc_error').hide();
+
         } else {
           // hide all errors in case there are uncorrected error messages from last POST
+  
           $('#awk_error').hide();
           $('#fail_error').hide();
           $('#suc_error').hide();
+
           // iterate through errors in err_key
           $.each(result.key, function (index, value) {
             // show only the first error in errorMessages
